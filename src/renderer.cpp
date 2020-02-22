@@ -1,5 +1,6 @@
 #include "renderer.h"
 #include "barrier.h"
+#include "SDL_ttf.h"
 #include <iostream>
 #include <string>
 
@@ -15,6 +16,7 @@ Renderer::Renderer(const std::size_t screen_width,
     std::cerr << "SDL could not initialize.\n";
     std::cerr << "SDL_Error: " << SDL_GetError() << "\n";
   }
+  TTF_Init();
 
   // Create Window
   sdl_window = SDL_CreateWindow("Snake Game", SDL_WINDOWPOS_CENTERED,
@@ -36,6 +38,7 @@ Renderer::Renderer(const std::size_t screen_width,
 
 Renderer::~Renderer() {
   SDL_DestroyWindow(sdl_window);
+  TTF_Quit();
   SDL_Quit();
 }
 
@@ -75,17 +78,39 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
   block.y = static_cast<int>(snake.head_y) * block.h;
   if (snake.alive) {
     SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x7A, 0xCC, 0xFF);
-  } else {
+  } else 
+  {
     SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
+
+    TTF_Font * font = TTF_OpenFont("../arial.ttf", 25);
+
+    SDL_Color color = { 255, 255, 255 };
+    SDL_Surface * surface = TTF_RenderText_Solid(font, "GAME OVER", color);
+    SDL_Texture * texture = SDL_CreateTextureFromSurface(sdl_renderer, surface);
+
+    int texW = 0;
+    int texH = 0;
+    SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
+    SDL_Rect dstrect = { 250, 200, texW, texH };
+
+    //Mind you that (0,0) is on the top left of the window/screen, think a rect as the text's box, that way it would be very simple to understance
+
+    //Now since it's a texture, you have to put RenderCopy in your game loop area, the area where the whole code executes
+
+    SDL_RenderCopy(sdl_renderer, texture, NULL, &dstrect);
+    //Don't forget too free your surface and texture
+    TTF_CloseFont(font);
+    SDL_DestroyTexture(texture);
+    SDL_FreeSurface(surface);
   }
   SDL_RenderFillRect(sdl_renderer, &block);
 
   // Update Screen
   SDL_RenderPresent(sdl_renderer);
+
 }
 
 void Renderer::UpdateWindowTitle(int score, int fps) {
   std::string title{"Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps)};
   SDL_SetWindowTitle(sdl_window, title.c_str());
-  
 }
