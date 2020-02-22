@@ -2,6 +2,7 @@
 #include <iostream>
 #include "SDL.h"
 #include "snake.h"
+#include "barrier.h"
 
 void Controller::ChangeDirection(Snake &snake, Snake::Direction input,
                                  Snake::Direction opposite) const {
@@ -35,6 +36,27 @@ void Controller::HandleInput(bool &running, Snake &snake) const {
           ChangeDirection(snake, Snake::Direction::kRight,
                           Snake::Direction::kLeft);
           break;
+      }
+    }
+  }
+}
+
+void Controller::HandleInputMenu(bool &running) const {
+  SDL_Event e;
+  while (SDL_PollEvent(&e)) {
+    if (e.type == SDL_QUIT) {
+      running = false;
+    } else if (e.type == SDL_KEYDOWN) {
+      switch (e.key.keysym.sym) {
+        case SDLK_y:
+          BarrierSingleton::getInstance().init();
+          running = false;
+          break;
+
+        case SDLK_n:
+          running = false;
+          break;
+
       }
     }
   }

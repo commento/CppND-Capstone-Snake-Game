@@ -82,32 +82,55 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
   {
     SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
 
-    TTF_Font * font = TTF_OpenFont("../arial.ttf", 25);
-
-    SDL_Color color = { 255, 255, 255 };
-    SDL_Surface * surface = TTF_RenderText_Solid(font, "GAME OVER", color);
-    SDL_Texture * texture = SDL_CreateTextureFromSurface(sdl_renderer, surface);
-
-    int texW = 0;
-    int texH = 0;
-    SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
-    SDL_Rect dstrect = { 250, 200, texW, texH };
-
-    //Mind you that (0,0) is on the top left of the window/screen, think a rect as the text's box, that way it would be very simple to understance
-
-    //Now since it's a texture, you have to put RenderCopy in your game loop area, the area where the whole code executes
-
-    SDL_RenderCopy(sdl_renderer, texture, NULL, &dstrect);
-    //Don't forget too free your surface and texture
-    TTF_CloseFont(font);
-    SDL_DestroyTexture(texture);
-    SDL_FreeSurface(surface);
+    DisplayText("G A M E      O V E R");
   }
   SDL_RenderFillRect(sdl_renderer, &block);
 
   // Update Screen
   SDL_RenderPresent(sdl_renderer);
 
+}
+
+void Renderer::RenderMenu() {
+  SDL_Rect block;
+  block.w = screen_width / grid_width;
+  block.h = screen_height / grid_height;
+
+  // Clear screen
+  SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
+  SDL_RenderClear(sdl_renderer);
+
+  DisplayText("SNAKE GAME: Play with walls? y/n");
+
+  SDL_RenderFillRect(sdl_renderer, &block);
+
+  // Update Screen
+  SDL_RenderPresent(sdl_renderer);
+
+}
+
+void Renderer::DisplayText(std::string text)
+{
+  TTF_Font * font = TTF_OpenFont("../arial.ttf", 25);
+
+  SDL_Color color = { 255, 255, 255 };
+  SDL_Surface * surface = TTF_RenderText_Solid(font, text.c_str(), color);
+  SDL_Texture * texture = SDL_CreateTextureFromSurface(sdl_renderer, surface);
+
+  int texW = 0;
+  int texH = 0;
+  SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
+  SDL_Rect dstrect = { 100, 200, texW, texH };
+
+  //Mind you that (0,0) is on the top left of the window/screen, think a rect as the text's box, that way it would be very simple to understance
+
+  //Now since it's a texture, you have to put RenderCopy in your game loop area, the area where the whole code executes
+
+  SDL_RenderCopy(sdl_renderer, texture, NULL, &dstrect);
+  //Don't forget too free your surface and texture
+  TTF_CloseFont(font);
+  SDL_DestroyTexture(texture);
+  SDL_FreeSurface(surface);
 }
 
 void Renderer::UpdateWindowTitle(int score, int fps) {
