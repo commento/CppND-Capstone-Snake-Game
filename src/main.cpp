@@ -1,6 +1,7 @@
 #include <iostream>
 #include "controller.h"
 #include "game.h"
+#include "menu.h"
 #include "renderer.h"
 #include "barrier.h"
 int main() {
@@ -14,15 +15,9 @@ int main() {
   Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
   Controller controller;
   Game game(kGridWidth, kGridHeight);
-  std::cout << "Play with walls? y/n" << std::endl;
-  std::string res;
-  std::cin >> res;
+  Menu menu(kGridWidth, kGridHeight);
 
-  if (res == "y" || res == "yes")
-  {
-    BarrierSingleton::getInstance().init();
-  }
-
+  menu.Run(controller, renderer, kMsPerFrame);
   game.Run(controller, renderer, kMsPerFrame);
   std::cout << "Game has terminated successfully!\n";
   std::cout << "Score: " << game.GetScore() << "\n";
