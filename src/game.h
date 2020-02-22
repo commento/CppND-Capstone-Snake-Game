@@ -16,6 +16,8 @@ class Game {
   int GetScore() const;
   int GetSize() const;
 
+  static int score;
+
  private:
   Snake snake;
   SDL_Point food;
@@ -24,8 +26,6 @@ class Game {
   std::mt19937 engine;
   std::uniform_int_distribution<int> random_w;
   std::uniform_int_distribution<int> random_h;
-
-  int score{0};
 
   void PlaceFood();
   void Update();

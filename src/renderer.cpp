@@ -1,5 +1,6 @@
 #include "renderer.h"
 #include "barrier.h"
+#include "game.h"
 #include "SDL_ttf.h"
 #include <iostream>
 #include <string>
@@ -42,6 +43,8 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
+
+
 void Renderer::Render(Snake const snake, SDL_Point const &food) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
@@ -82,7 +85,11 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
   {
     SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
 
-    DisplayText("G A M E      O V E R");
+    DisplayText(200, 300, 40, "G A M E      O V E R");
+    DisplayText(200, 350, 30, "G A M E      O V E R");
+    DisplayText(200, 400, 20, "G A M E      O V E R");
+
+    DisplayText(200, 450, 15, "score" + std::to_string(Game::score));
   }
   SDL_RenderFillRect(sdl_renderer, &block);
 
@@ -100,7 +107,8 @@ void Renderer::RenderMenu() {
   SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
   SDL_RenderClear(sdl_renderer);
 
-  DisplayText("SNAKE GAME: Play with walls? y/n");
+  DisplayText(170, 200, 40, "S N A K E  G A M E");
+  DisplayText(210, 300, 25, "Play with walls? y/n");
 
   SDL_RenderFillRect(sdl_renderer, &block);
 
@@ -109,9 +117,9 @@ void Renderer::RenderMenu() {
 
 }
 
-void Renderer::DisplayText(std::string text)
+void Renderer::DisplayText(int x, int y, int size, std::string text)
 {
-  TTF_Font * font = TTF_OpenFont("../arial.ttf", 25);
+  TTF_Font * font = TTF_OpenFont("../arial.ttf", size);
 
   SDL_Color color = { 255, 255, 255 };
   SDL_Surface * surface = TTF_RenderText_Solid(font, text.c_str(), color);
@@ -120,7 +128,7 @@ void Renderer::DisplayText(std::string text)
   int texW = 0;
   int texH = 0;
   SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
-  SDL_Rect dstrect = { 100, 200, texW, texH };
+  SDL_Rect dstrect = { x, y, texW, texH };
 
   //Mind you that (0,0) is on the top left of the window/screen, think a rect as the text's box, that way it would be very simple to understance
 

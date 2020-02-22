@@ -15,7 +15,7 @@ class Renderer {
   void RenderMenu();
   void UpdateWindowTitle(int score, int fps);
 
-  void DisplayText(std::string text);
+  void DisplayText(int x, int y, int size, std::string text);
 
  private:
   SDL_Window *sdl_window;

@@ -2,6 +2,9 @@
 #include <iostream>
 #include "SDL.h"
 
+
+int Game::score = 0;
+
 Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake(grid_width, grid_height),
       engine(dev()),
