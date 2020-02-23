@@ -10,7 +10,7 @@ void Controller::ChangeDirection(Snake &snake, Snake::Direction input,
   return;
 }
 
-void Controller::HandleInput(bool &running, Snake &snake) const {
+void Controller::HandleInput(bool &running, bool &restart, Snake &snake) const {
   SDL_Event e;
   while (SDL_PollEvent(&e)) {
     if (e.type == SDL_QUIT) {
@@ -35,6 +35,15 @@ void Controller::HandleInput(bool &running, Snake &snake) const {
         case SDLK_RIGHT:
           ChangeDirection(snake, Snake::Direction::kRight,
                           Snake::Direction::kLeft);
+          break;
+        case SDLK_y:
+          restart = true;
+          BarrierSingleton::getInstance().reset();
+          running = false;
+          break;
+
+        case SDLK_n:
+          running = false;
           break;
       }
     }

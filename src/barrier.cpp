@@ -32,6 +32,11 @@ void BarrierSingleton::init()
     }
 }
 
+void BarrierSingleton::reset()
+{
+  body.clear();
+}
+
 // Inefficient method to check if cell is occupied by snake.
 bool BarrierSingleton::BarrierCell(int x, int y) {
   for (auto const &item : body) {

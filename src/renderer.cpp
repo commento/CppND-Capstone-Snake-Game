@@ -89,7 +89,8 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
     DisplayText(200, 350, 30, "G A M E      O V E R");
     DisplayText(200, 400, 20, "G A M E      O V E R");
 
-    DisplayText(200, 450, 15, "score" + std::to_string(Game::score));
+    DisplayText(200, 450, 15, "score " + std::to_string(Game::score));
+    DisplayText(200, 500, 15, "Restart? y/n ");
   }
   SDL_RenderFillRect(sdl_renderer, &block);
 
@@ -108,7 +109,9 @@ void Renderer::RenderMenu() {
   SDL_RenderClear(sdl_renderer);
 
   DisplayText(170, 200, 40, "S N A K E  G A M E");
-  DisplayText(210, 300, 25, "Play with walls? y/n");
+  DisplayText(170, 250, 30, "S N A K E  G A M E");
+  DisplayText(170, 290, 25, "S N A K E  G A M E");
+  DisplayText(210, 350, 25, "Play with walls? y/n");
 
   SDL_RenderFillRect(sdl_renderer, &block);
 

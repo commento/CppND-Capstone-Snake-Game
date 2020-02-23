@@ -12,15 +12,18 @@ int main() {
   constexpr std::size_t kGridWidth{32};
   constexpr std::size_t kGridHeight{32};
 
+  bool restart = false;
+  do{
+
   Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
   Controller controller;
   Game game(kGridWidth, kGridHeight);
   Menu menu(kGridWidth, kGridHeight);
 
   menu.Run(controller, renderer, kMsPerFrame);
-  game.Run(controller, renderer, kMsPerFrame);
+  restart = game.Run(controller, renderer, kMsPerFrame);
+  }while(restart);
+
   std::cout << "Game has terminated successfully!\n";
-  std::cout << "Score: " << game.GetScore() << "\n";
-  std::cout << "Size: " << game.GetSize() << "\n";
   return 0;
 }

@@ -13,6 +13,7 @@ class BarrierSingleton {
   void operator=(BarrierSingleton const&)  = delete;
   
   static void init();
+  static void reset();
   bool BarrierCell(int x, int y);
 
   static std::vector<SDL_Point> body;
